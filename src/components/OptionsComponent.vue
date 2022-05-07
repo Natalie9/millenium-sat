@@ -1,16 +1,23 @@
 <template>
   <div>
-    <h2>Timer: {{ todoCount }}</h2>
+    <h4 style="display: inline; margin: 3em 0px">
+      Próxima atualização: {{ todoCount }}
+    </h4>
+    <button @click="getData" style="display: inline; margin: 3em">
+      Atualizar
+    </button>
     <p v-if="isLoading">carregando ...</p>
-    <ul>
-      <li v-for="item in lista" :key="item['_id']">
+    <ol>
+      <li
+        v-for="item in lista"
+        :key="item['_id']"
+        style="border: 1px black solid; padding: 2em"
+      >
         <div v-for="value in Object.keys(item)" :key="value">
           {{ value }} {{ item[value] }}
         </div>
       </li>
-    </ul>
-    <button @click="getData">Atualizar</button>
-    <div id="tester" style="width: 600px; height: 250px"></div>
+    </ol>
   </div>
 </template>
 
@@ -34,6 +41,9 @@ export default defineComponent({
       count: fourMinutes,
       isLoading: false,
     };
+  },
+  mounted() {
+    this.getData();
   },
   methods: {
     increment(): void {
