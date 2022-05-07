@@ -4,14 +4,17 @@
     <p v-if="isLoading">carregando ...</p>
     <ul>
       <li v-for="item in lista" :key="item['_id']">
-        {{ item["payload]"] }}
+        {{ item }}
       </li>
     </ul>
     <button @click="getData">Atualizar</button>
+    <div id="tester" style="width: 600px; height: 250px"></div>
   </div>
 </template>
 
 <script lang="ts">
+import Plotly from "plotly.js";
+
 import { defineComponent, PropType } from "vue";
 import axios from "axios";
 const fourMinutes = 60 * 4;
@@ -45,7 +48,7 @@ export default defineComponent({
         return arr;
       }, []);
       this.isLoading = false;
-      this.lista = [...visu.slice(-5)];
+      this.lista = [...visu.slice(-10)];
     },
   },
   computed: {
