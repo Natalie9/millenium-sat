@@ -4,7 +4,9 @@
     <p v-if="isLoading">carregando ...</p>
     <ul>
       <li v-for="item in lista" :key="item['_id']">
-        {{ item }}
+        <div v-for="value in Object.keys(item)" :key="value">
+          {{ value }} {{ item[value] }}
+        </div>
       </li>
     </ul>
     <button @click="getData">Atualizar</button>
@@ -48,7 +50,7 @@ export default defineComponent({
         return arr;
       }, []);
       this.isLoading = false;
-      this.lista = [...visu.slice(-10)];
+      this.lista = [...visu.slice(-5)];
     },
   },
   computed: {
