@@ -6,16 +6,17 @@
     <button @click="getData" style="display: inline; margin: 3em">
       Atualizar
     </button>
+    <button
+      @click="showAllDatas = !showAllDatas"
+      style="display: inline; margin: 3em"
+    >
+      {{ showAllDatas ? "Principais dados" : "Todos os dados" }}
+    </button>
     <p v-if="isLoading">carregando ...</p>
     <ol>
-      <li
-        v-for="item in lista"
-        :key="item['_id']"
-        style="border: 1px black solid; padding: 2em"
-      >
-        <div v-for="value in Object.keys(item)" :key="value">
-          {{ value }} {{ item[value] }}
-        </div>
+      <li v-for="item in lista" :key="item['_id']">
+        <span><all-datas :item="item" v-if="showAllDatas" /></span>
+        <span><main-datas :item="item" v-if="!showAllDatas" /></span>
       </li>
     </ol>
   </div>
@@ -26,20 +27,25 @@ import Plotly from "plotly.js";
 
 import { defineComponent, PropType } from "vue";
 import axios from "axios";
-const fourMinutes = 60 * 4;
+import AllDatas from "./AllDatas.vue";
+import MainDatas from "./MainDatas.vue";
+const fourMinutes = 30;
 export default defineComponent({
+  components: { AllDatas, MainDatas },
   name: "OptionsComponent",
   data(): {
     clickCount: number;
     lista: Array<any>;
     count: number;
     isLoading: boolean;
+    showAllDatas: boolean;
   } {
     return {
       clickCount: 0,
       lista: [],
       count: fourMinutes,
       isLoading: false,
+      showAllDatas: true,
     };
   },
   mounted() {
@@ -60,7 +66,7 @@ export default defineComponent({
         return arr;
       }, []);
       this.isLoading = false;
-      this.lista = [...visu.slice(-5)];
+      this.lista = [...visu.slice(-10)].reverse();
     },
   },
   computed: {
